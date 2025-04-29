@@ -1,4 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://b1mt883kcp3i"]
+[gd_scene load_steps=11 format=3 uid="uid://b1mt883kcp3i"]
+
+[ext_resource type="Script" uid="uid://dc8gn76ithtkn" path="res://drone.gd" id="1_jgr37"]
+[ext_resource type="Script" uid="uid://fo8r0jyxf6cn" path="res://camera_3d.gd" id="1_qrxkg"]
+[ext_resource type="PackedScene" uid="uid://bmths7ru8054o" path="res://Drone.tscn" id="2_qrxkg"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_jgr37"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -22,6 +26,8 @@ size = Vector2(100, 100)
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_jgr37"]
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_nb8mf"]
+
 [node name="drone_scene" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -39,8 +45,21 @@ mesh = SubResource("PlaneMesh_qhlfa")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
 shape = SubResource("WorldBoundaryShape3D_jgr37")
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.10388, 3.01379)
+[node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("player", "target")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.61685, 3.01379)
+script = ExtResource("1_qrxkg")
+player = NodePath("../Drone")
+target = NodePath("../Drone/cam_target")
 
-[node name="RigidBody3D" type="RigidBody3D" parent="."]
+[node name="Drone" type="CharacterBody3D" parent="."]
+script = ExtResource("1_jgr37")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Drone"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.403823, 0)
+shape = SubResource("BoxShape3D_nb8mf")
+
+[node name="CSGCombiner3D" parent="Drone" instance=ExtResource("2_qrxkg")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.262505, 0)
+
+[node name="cam_target" type="Marker3D" parent="Drone"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.24207, 2.14829, 0)
