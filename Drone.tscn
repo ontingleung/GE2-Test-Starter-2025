@@ -1,0 +1,3 @@
+[gd_scene format=3 uid="uid://bmths7ru8054o"]
+
+[node name="CSGCombiner3D" type="CSGCombiner3D"]
